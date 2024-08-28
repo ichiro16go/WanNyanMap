@@ -1,12 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
+//components系
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import  Ionicons  from 'react-native-vector-icons/Ionicons'; 
+//page
+import BookMarkPage from './app/view/pages/bookMarkPage';
+import MapPage from './app/view/pages/mapPage';
+import WalkCoursePage from './app/view/pages/walkCoursePage';
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen 
+          name="Walk" 
+          component={WalkCoursePage} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="walk" size={size} color={color} /> 
+            ),
+          }} 
+        />
+        <Tab.Screen 
+          name="Map" 
+          component={MapPage} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="map" size={size} color={color} /> 
+            ),
+          }} 
+        />
+        <Tab.Screen 
+          name="Book" 
+          component={BookMarkPage} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="bookmark" size={size} color={color} /> // アイコンを設定
+            ),
+          }} 
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
