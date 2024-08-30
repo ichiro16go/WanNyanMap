@@ -21,7 +21,9 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="walk" size={size} color={color} /> 
             ),
+            headerShown: false,
           }} 
+          
         />
         <Tab.Screen 
           name="Map" 
@@ -30,6 +32,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="map" size={size} color={color} /> 
             ),
+            headerShown: false,
           }} 
         />
         <Tab.Screen 
@@ -39,6 +42,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="bookmark" size={size} color={color} /> // アイコンを設定
             ),
+            headerShown: false,
           }} 
         />
       </Tab.Navigator>
