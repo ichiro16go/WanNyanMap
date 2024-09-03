@@ -1,40 +1,27 @@
-//コントローラーのページ
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import * as Location from 'expo-location';
 import axios from 'axios';
 //component
-import MapView, { PROVIDER_GOOGLE,UrlTile,Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, UrlTile, Marker } from 'react-native-maps';
+import SearchBar from '../components/searchBar';
+import RegionReloadButton from '../components/regionReloadButton';
+//function
+import getRegion from '../../utils/getRegion';
 
-const GOOGLE_PLACES_API_KEY=process.env.GOOGLE_PLACES_API_KEY;
+const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 export default function MapPage() {
     const [region, setRegion] = useState(null);
-    const [searchQuery,setSearchQuery]=useState('');
-    const [places,setPlaces]=useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [places, setPlaces] = useState([]);
 
     //現在地取得
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('位置情報の許可が必要です。');
-                return;
-            }
+        getRegion(region, setRegion);
+    }, []);
 
-            let location = await Location.getCurrentPositionAsync({});
-            console.log(location.coords)
-            setRegion({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.0461,
-                longitudeDelta: 0.0210,
-            });
-        })();
-    },[]);
 
-   
 
     //現在地が得られなかった時の処理
     if (!region) {
@@ -42,14 +29,28 @@ export default function MapPage() {
     }
     return (
         <View style={styles.container}>
+            <View style={styles.searchBarContainer}>
+                <SearchBar />
+            </View>
             <MapView style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                region={region} />
+                region={region} >
+                <Marker coordinate={region}>
+                    <Image
+                        source={require('../../../assets/region_nikukyu.png')}
+                        style={{ width: 50, height: 50 }} // 画像サイズを変更
+                    />
+                </Marker>
+            </MapView>
+            <View style={styles.buttonContainer}>
+                <RegionReloadButton region={region} setRegion={setRegion} />
+            </View>
             <StatusBar style="auto" />
         </View>
     );
 }
 
+//css
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -61,4 +62,17 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    searchBarContainer: {
+        position: 'absolute',
+        top: 40,
+        left: 0,
+        right: 0,
+        zIndex: 1,
+    },
+    buttonContainer:{
+        position:'absolute',
+        bottom: 20,
+        right:20,
+        zIndex:1,
+    }
 });
