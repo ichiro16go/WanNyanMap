@@ -13,15 +13,21 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 export default function MapPage() {
     const [region, setRegion] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
     const [places, setPlaces] = useState([]);
 
     //現在地取得
     useEffect(() => {
-        getRegion(region, setRegion);
+        // 初回の現在地取得
+        getRegion(null, setRegion);
+        console.log(region);
+        // 5秒ごとに現在地を更新
+        const intervalId = setInterval(() => {
+            getRegion(null, setRegion);
+        }, 5000);  // 5000ミリ秒 = 5秒
+
+        // コンポーネントのクリーンアップ時にインターバルをクリア
+        return () => clearInterval(intervalId);
     }, []);
-
-
 
     //現在地が得られなかった時の処理
     if (!region) {
@@ -34,13 +40,23 @@ export default function MapPage() {
             </View>
             <MapView style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                region={region} >
+                initialRegion={region} >
                 <Marker coordinate={region}>
                     <Image
                         source={require('../../../assets/region_nikukyu.png')}
                         style={{ width: 50, height: 50 }} // 画像サイズを変更
                     />
                 </Marker>
+                {places.map((place) => (
+                    <Marker
+                        key={place.id}
+                        coordinate={{
+                            latitude: place.geometry.location.lat,
+                            longitude: place.geometry.location.lng,
+                        }}
+                        title={place.name}
+                    />
+                ))}
             </MapView>
             <View style={styles.buttonContainer}>
                 <RegionReloadButton region={region} setRegion={setRegion} />
@@ -64,7 +80,7 @@ const styles = StyleSheet.create({
     },
     searchBarContainer: {
         position: 'absolute',
-        top: 40,
+        top: 70,
         left: 0,
         right: 0,
         zIndex: 1,
