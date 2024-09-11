@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 import axios from 'axios';
 
-export default async function getRegion(region, setRegion) {
+export default async function getRegion(region, setRegion,setPlaces) {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
         console.log('位置情報の許可が必要です。');
@@ -35,6 +35,7 @@ export default async function getRegion(region, setRegion) {
         });
 
         const places = response.data.results;
+        setPlaces(places)
         console.log('周辺のスポット:', places);
         // ここで取得したスポット情報を必要に応じて状態に保存することができます
     } catch (error) {

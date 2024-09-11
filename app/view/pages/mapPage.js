@@ -18,11 +18,11 @@ export default function MapPage() {
     //現在地取得
     useEffect(() => {
         // 初回の現在地取得
-        getRegion(null, setRegion);
+        getRegion(null, setRegion,setPlaces);
         console.log(region);
         // 5秒ごとに現在地を更新
         const intervalId = setInterval(() => {
-            getRegion(null, setRegion);
+            getRegion(null, setRegion,setPlaces);
         }, 5000);  // 5000ミリ秒 = 5秒
 
         // コンポーネントのクリーンアップ時にインターバルをクリア
