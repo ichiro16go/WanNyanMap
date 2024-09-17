@@ -9,6 +9,8 @@ import BookMarkPage from './app/view/pages/bookMarkPage';
 import MapPage from './app/view/pages/mapPage';
 import WalkCoursePage from './app/view/pages/walkCoursePage';
 
+
+
 export default function App() {
   const Tab = createBottomTabNavigator();
   return (
