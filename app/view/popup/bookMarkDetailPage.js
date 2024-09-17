@@ -1,18 +1,15 @@
 //ブックマークのページ
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-
-export default function BookMarkPage() {
-  const navigation = useNavigation();
+export default function BookDetailPopUp() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         {Array.from({ length: 5 }).map((_, index) => (
           <View key={index} style={styles.item}>
             <Text>BookMarkTitle</Text>
-            <Button title="Button" onPress={() => navigation.navigate(`BookMarkDetailPage`)} />
+            <Button title="Button" onPress={() => {}} />
           </View>
         ))}
       </ScrollView>

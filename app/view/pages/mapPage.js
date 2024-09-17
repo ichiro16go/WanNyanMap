@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Alert } from 'react-native';
 //component
 import MapView, { PROVIDER_GOOGLE, UrlTile, Marker } from 'react-native-maps';
 import SearchBar from '../components/searchBar';
@@ -47,16 +48,17 @@ export default function MapPage() {
                         style={{ width: 50, height: 50 }} // 画像サイズを変更
                     />
                 </Marker>
-                {places.map((place) => (
+                {/* {places.map((place) => (
                     <Marker
-                        key={place.id}
+                        key={place.id} // ここでユニークなkeyを指定
                         coordinate={{
                             latitude: place.geometry.location.lat,
                             longitude: place.geometry.location.lng,
                         }}
                         title={place.name}
+                        onPress={() => { Alert.alert("マーカーを押したよ") }}
                     />
-                ))}
+                ))} */}
             </MapView>
             <View style={styles.buttonContainer}>
                 <RegionReloadButton region={region} setRegion={setRegion} />

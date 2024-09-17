@@ -1,7 +1,11 @@
 import * as Location from 'expo-location';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-export default async function getRegion(region, setRegion,setPlaces) {
+import getNearSpot from './spotController';
+
+export default async function getRegion(region, setRegion, setPlaces) {
+    // dotenv.config(); // この行を削除
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
         console.log('位置情報の許可が必要です。');
@@ -21,24 +25,8 @@ export default async function getRegion(region, setRegion,setPlaces) {
         longitudeDelta: 0.0105,
     });
 
-    // Google Places APIを使用して周辺のスポットを取得
-    const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-    const radius = 200; // 半径200m
-
-    try {
-        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json`, {
-            params: {
-                location: `${latitude},${longitude}`,
-                radius: radius,
-                key: GOOGLE_PLACES_API_KEY,
-            },
-        });
-
-        const places = response.data.results;
-        setPlaces(places)
-        console.log('周辺のスポット:', places);
-        // ここで取得したスポット情報を必要に応じて状態に保存することができます
-    } catch (error) {
-        console.error('スポット情報の取得に失敗しました:', error);
-    }
+    // // Google Places APIを使用して周辺のスポットを取得
+    // const apiKey = Constants.extra.GOOGLE_PLACE_API_KEY; // 修正
+    // console.log(apiKey)
+    getNearSpot(latitude,longitude,setPlaces)
 }
